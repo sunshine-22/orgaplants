@@ -1,16 +1,47 @@
-import React from "react";
+import { useScrollToTop } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import { ScrollView, View,Image } from "react-native";
 
 const SlideShow=()=>{
+    const [banner,setbanner]=useState(<Image source={require("./images/logo/babber1.jpg")} style={{height:200,width:355,borderRadius:15}}/>)
+    var bannerdata=[]
+    useEffect(()=>{
+        fetch("http://172.20.10.5:8000/offerbanners/",{
+            method:"GET",
+            mode:"no-cors",
+            headers:{
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then((response)=>response.json())
+        .then((responseData)=>{
+            for(let i=0;i<responseData.length;i++){
+                bannerdata.push(
+                responseData[i].offerbanner
+            )
+
+            }
+            
+            
+            
+        })
+    },[])
+    // setInterval(()=>{
+    //     slide();
+
+    // },5000)
+    function slide(){
+            var randombanner=Math.floor(Math.random() * bannerdata.length)
+            setbanner(<Image source={{uri:bannerdata[randombanner]}} style={{height:200,width:355,borderRadius:15}}/>)
+        
+    }
     return(
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <View  style={{flexDirection:"row",justifyContent:"space-between",direction:"rtl"}}>
                 <View style={{margin:5,marginright:5}} >
-                    <Image source={require("./images/logo/babber1.jpg")} style={{height:200,width:360,borderRadius:15}}/>
+                    {banner}
                 </View>
-                <View style={{margin:5,marginright:5}} >
-                    <Image source={require("./images/logo/banner2.jpg")} style={{height:200,width:360,borderRadius:15}}/>
-                </View>
+                
             </View>
         </ScrollView>
         

@@ -6,28 +6,28 @@ const Showcase=({navigation})=>{
         <ScrollView>
             <View style={{flex:1}}>
                 <View style={{flexDirection:"row"}}>
-                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore")}>
+                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore",{name:"Fruits"})}>
                         <View style={{borderRadius:50}}>
                             <Image source={require("./images/products/fruits.jpg")} style={{width:75,height:75,borderRadius:50,padding:10}}></Image>
                             
                         </View>
                         <Text style={{textAlign:"center",fontWeight:"bold"}}>Fruits</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore")}>
+                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore",{name:"Vegetables"})}>
                         <View style={{borderRadius:50}}>
                             <Image source={require("./images/products/vegetables.jpg")} style={{width:75,height:75,borderRadius:50,padding:10}}></Image>
                             
                         </View>
                         <Text style={{textAlign:"center",fontWeight:"bold"}}>Vegetables</Text>
                     </TouchableOpacity >
-                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore")}>
+                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore",{name:"Greens"})}>
                         <View style={{borderRadius:50}}>
                             <Image source={require("./images/products/greens.jpg")} style={{width:75,height:75,borderRadius:50,padding:10}}></Image>
                             
                         </View>
                         <Text style={{textAlign:"center",fontWeight:"bold"}}>Greens</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore")}>
+                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore",{name:"Grocery"})}>
                         <View style={{borderRadius:50}}>
                             <Image source={require("./images/products/grocery.jpg")} style={{width:75,height:75,borderRadius:50,padding:10}}></Image>
                             
@@ -36,28 +36,28 @@ const Showcase=({navigation})=>{
                     </TouchableOpacity>
                 </View>
                 <View style={{flexDirection:"row"}}>
-                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore")}>
+                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore",{name:"Honey"})}>
                         <View style={{borderRadius:50}}>
                             <Image source={require("./images/products/honey.jpg")} style={{width:75,height:75,borderRadius:50,padding:10}}></Image>
                             
                         </View>
                         <Text style={{textAlign:"center",fontWeight:"bold"}}>Honey</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore")}>
+                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore",{name:"Meat"})}>
                         <View style={{borderRadius:50}}>
                             <Image source={require("./images/products/meat.jpg")} style={{width:75,height:75,borderRadius:50,padding:10}}></Image>
                             
                         </View>
                         <Text style={{textAlign:"center",fontWeight:"bold"}}>Meat</Text>
                     </TouchableOpacity >
-                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore")}>
+                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore",{name:"Nuts"})}>
                         <View style={{borderRadius:50}}>
                             <Image source={require("./images/products/nuts.jpg")} style={{width:75,height:75,borderRadius:50,padding:10}}></Image>
                             
                         </View>
                         <Text style={{textAlign:"center",fontWeight:"bold"}}>Nuts</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore")}>
+                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore",{name:"Shakes"})}>
                         <View style={{borderRadius:50}}>
                             <Image source={require("./images/products/shakes.jpg")} style={{width:75,height:75,borderRadius:50,padding:10}}></Image>
                             
@@ -66,28 +66,28 @@ const Showcase=({navigation})=>{
                     </TouchableOpacity>
                 </View>
                 <View style={{flexDirection:"row"}}>
-                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore")}>
+                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore",{name:"Chocolates"})}>
                         <View style={{borderRadius:50}}>
                             <Image source={require("./images/products/chocolates.jpg")} style={{width:75,height:75,borderRadius:50,padding:10}}></Image>
                             
                         </View>
                         <Text style={{textAlign:"center",fontWeight:"bold"}}>Chocolates</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore")}>
+                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore",{name:"Electronics"})}>
                         <View style={{borderRadius:50}}>
                             <Image source={require("./images/products/electronics.jpg")} style={{width:75,height:75,borderRadius:50,padding:10}}></Image>
                             
                         </View>
                         <Text style={{textAlign:"center",fontWeight:"bold"}}>Electronics</Text>
                     </TouchableOpacity >
-                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore")}>
+                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore",{name:"Dairy"})}>
                         <View style={{borderRadius:50}}>
                             <Image source={require("./images/products/dairy.jpg")} style={{width:75,height:75,borderRadius:50,padding:10}}></Image>
                             
                         </View>
                         <Text style={{textAlign:"center",fontWeight:"bold"}}>Dairy</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore")}>
+                    <TouchableOpacity style={{margin:"2%"}} onPress={()=>navigation.navigate("FeaturedStore",{name:"Medicines"})}>
                         <View style={{borderRadius:50}}>
                             <Image source={require("./images/products/medicines.jpg")} style={{width:75,height:75,borderRadius:50,padding:10}}></Image>
                             

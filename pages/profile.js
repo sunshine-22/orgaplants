@@ -2,7 +2,9 @@ import React from "react";
 import { SafeAreaView, View,Image,Text, TouchableOpacity,Alert,Linking } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-const Profile=({navigation})=>{
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const Profile=({navigation,route})=>{
+    console.log(route)
     const Logout=()=>{
         Alert.alert("Logout","Are you sure you want to logout",[
             {
@@ -10,7 +12,7 @@ const Profile=({navigation})=>{
                 onPress:()=>console.log("cancel"),
                 style:"cancel"
             },
-            { text: "OK", onPress: () => {navigation.navigate("Home"),navigation.reset({index:0,routes:[{name:"Home"}]});
+            { text: "OK", onPress: async() => {await AsyncStorage.removeItem("useridentity"),navigation.navigate("Home"),navigation.reset({index:0,routes:[{name:"Home"}]});
     
             },style:"destructive" }
         ])
@@ -19,9 +21,9 @@ const Profile=({navigation})=>{
         <SafeAreaView style={{flex:1,backgroundColor:"#f2f2f2"}}>
             <View style={{borderWidth:1,margin:"3%",borderRadius:10,backgroundColor:"white",borderColor:"white",flexDirection:"row"}}>
                 <View style={{width:250}}>
-                    <Text style={{marginTop:"5%",marginLeft:"5%",fontSize:22,fontWeight:"bold"}}>SABARISHKUMAR</Text>
-                    <Text style={{fontSize:15,marginTop:"2%",marginLeft:"5%"}} numberOfLines={1}>sabarishkumar2002@gmail.com</Text>
-                    <Text style={{fontSize:15,marginTop:"2%",marginLeft:"5%"}} numberOfLines={1}>+919344810835</Text>
+                    <Text style={{marginTop:"5%",marginLeft:"5%",fontSize:22,fontWeight:"bold"}}>{route.params.userdata.name}</Text>
+                    <Text style={{fontSize:15,marginTop:"2%",marginLeft:"5%"}} numberOfLines={1}>{route.params.userdata.email}</Text>
+                    <Text style={{fontSize:15,marginTop:"2%",marginLeft:"5%"}} numberOfLines={1}>{route.params.userdata._id}</Text>
                 </View>
                 <View style={{marginLeft:"auto"}}>
                     <Image source={require("./images/profile/profile.png")} style={{width:100,height:100}}></Image>
@@ -38,7 +40,7 @@ const Profile=({navigation})=>{
                     </View>
                 </TouchableOpacity>
                 
-                <TouchableOpacity onPress={()=>navigation.navigate("Payment")}>
+                <TouchableOpacity onPress={()=>navigation.navigate("Address",{userid:route.params.userdata._id})}>
                     <View style={{borderWidth:1,margin:"3%",width:95,backgroundColor:"white",borderColor:"white",borderRadius:10}}>
                         <View style={{alignItems:"center",margin:"3%"}}>
                             <MaterialIcons name="payment" size={35} color="black" />

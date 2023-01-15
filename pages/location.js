@@ -1,9 +1,49 @@
 import React, { useState } from "react";
-import { SafeAreaView, View ,Text,Image,TouchableOpacity,Modal, TextInput} from "react-native";
+import { SafeAreaView, View ,Text,Image,TouchableOpacity,Modal, TextInput, Alert,ActivityIndicator} from "react-native";
 import style from "./style";
 import { Ionicons } from '@expo/vector-icons';
-const Location=({navigation})=>{
+import * as Locations from 'expo-location';
+const Location=({navigation,route})=>{
+    console.log(route)
     const [modalvisible,setmodalvisible]=useState(false)
+    const [location, setLocation] = useState(null);
+    const [isloading,setisloading]=useState(false)
+    const locationaccess=async ()=>{
+        setisloading(!isloading)
+        let { status } = await Locations.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            Alert.alert("info",'Permission to access location was denied');
+            return;
+        }
+
+      let location = await Locations.getCurrentPositionAsync({});
+      setLocation(location);
+      console.log(location)
+      fetch("http://172.20.10.5:8000/livelocation/",{
+        method:"POST",
+        mode:"no-cors",
+        headers:{
+            Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body:JSON.stringify({
+            "latitude":location.coords.latitude,
+            "longitude":location.coords.longitude,
+            "userid":route.params.userkey
+        })
+         }).then((response)=>response.json())
+            .then((responseData)=>{
+        if(responseData.message=="failed"){
+            setisloading(!isloading)
+            Alert.alert("Info","Oops!something went wrong while fetching location try again!")
+        }
+        else{
+            setisloading(!isloading)
+            navigation.navigate("PersonalDetails",{userid:route.params.userkey})
+            
+        }
+    })
+    }
     return(
         <SafeAreaView style={style.backgroundcolor}>
             <View style={{margin:"5%"}}>
@@ -14,7 +54,8 @@ const Location=({navigation})=>{
                <Image source={require("./images/logo/location.webp")} style={{width:"100%",height:400}}/> 
             </View>
             <View style={{margin:"1%",alignItems:"center"}}>
-                <TouchableOpacity style={{borderWidth:1,width:"90%",height:50,borderRadius:13,backgroundColor:"#fc6f4c",borderColor:"#fc6f4c"}} onPress={()=>{navigation.navigate("PersonalDetails")}}>
+                <TouchableOpacity style={{borderWidth:1,width:"90%",height:50,borderRadius:13,backgroundColor:"#fc6f4c",borderColor:"#fc6f4c"}} onPress={locationaccess}>
+                    {isloading && <ActivityIndicator size={"large"} color="white"/>}
                     <Text style={{textAlign:"center",paddingTop:12,fontWeight:"bold",color:"white"}}>Allow Location access</Text>
                 </TouchableOpacity>
             </View>

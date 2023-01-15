@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { View,ScrollView,Text,Image, TextInput, TouchableOpacity, Alert } from "react-native";
+import { View,ScrollView,Text,Image, TextInput, TouchableOpacity, Alert,KeyboardAvoidingView } from "react-native";
 import style from "./style"
 import {CountryPicker} from "react-native-country-codes-picker";
 import Privacy from "./privacy"
@@ -9,11 +9,30 @@ const Home=({navigation})=>{
     const [countryCode, setCountryCode] = useState('');
     const [show, setShow] = useState(false);
     const [mobilenumber,setmobilenumber]=useState('')
-    const signin=()=>{
+    const signin=async ()=>{
         if(countryCode!="" && mobilenumber!="" && mobilenumber.length==10){
             
             const number=countryCode+mobilenumber
-            navigation.navigate("OtpEnter",{usermobile:number});
+            fetch("http://172.20.10.5:8000/registeruser/",{
+                method:"POST",
+                mode:"no-cors",
+                headers:{
+                    Accept: 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({
+                    "usermobile":number
+                })
+            }).then((response)=>response.json())
+            .then((responseData)=>{
+                if(responseData.message=="success"){
+                    navigation.navigate("OtpEnter",{usermobile:number,generatedotp:responseData.otp});
+                }
+                else{
+                    Alert.alert("Info",responseData.message)
+                }
+            })
+            
         }
         else{
             Alert.alert("Info","Please, Enter the mobile number to proceed...")
@@ -23,12 +42,14 @@ const Home=({navigation})=>{
         
     return(
         <ScrollView style={style.backgroundcolor}>
+            
             <View style={style.imagearea}>
                 <Image source={require("./images/logo/logo.jpg")} style={style.logoimage}/>
             </View>
             <View style={style.loginscreentext}>
                 <Text style={style.logintext}>Shop locally from trusted and reliable stores...</Text>
             </View>
+            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} >
             <View style={{flexDirection:"row",alignItems:"center",margin:"3%"}}>
                 <View style={{flex: 1, height: 2, backgroundColor: '#c9c7c7'}} />
                 <View>
@@ -59,6 +80,7 @@ const Home=({navigation})=>{
                 </TouchableOpacity>
                 
             </View>
+            </KeyboardAvoidingView>
         </ScrollView>
     )
 }

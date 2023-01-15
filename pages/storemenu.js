@@ -4,7 +4,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { SimpleAccordion } from 'react-native-simple-accordion';
 import { Entypo } from '@expo/vector-icons';
-const StoreMenu=({navigation})=>{
+const StoreMenu=({navigation,route})=>{
+    console.log(route)
     const [orderdesc,setorderdesc]=useState(false)
     const [modalvisible,setmodalvisible]=useState(false)
     const Menu=(
@@ -32,98 +33,7 @@ const StoreMenu=({navigation})=>{
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={{margin:"2%",flexDirection:"row"}}>
-                <View style={{margin:"2%",width:200}}>
-                    <Text style={{fontWeight:"bold",fontSize:15}}>Chocolate Truffled Cake (200gm)</Text>
-                    <View style={{margin:5,height:20,width:100,flexDirection:"row"}}>
-                        <Ionicons name="star" size={15} color="gold" />
-                        <Ionicons name="star" size={15} color="gold" />
-                        <Ionicons name="star" size={15} color="gold" />
-                        <Ionicons name="star" size={15} color="gold" />
-                        <Ionicons name="star" size={15} color="grey" />
-                        <Text style={{fontWeight:"bold",color:"grey"}}>8 reviews</Text>
-                    </View>
-                    <Text style={{fontWeight:"bold",fontSize:15}}>₹800/-</Text>
-                    <Text>customization available superfast delivery, fat reducer,milk product</Text>
-                </View>
-                <View style={{marginLeft:"auto"}}>
-                    <View style={{width:120,margin:5,height:100,borderRadius:15}}>
-                        <Image source={require("./images/stores/store.jpg")} style={{width:120,height:100,borderRadius:15}} />
-                    </View>
-                    <TouchableOpacity style={{borderWidth:1,height:30,margin:5,borderRadius:10,backgroundColor:"#f74862",borderColor:"#f74862"}}>
-                            <Text style={{padding:5,textAlign:"center",fontWeight:"bold",color:"white"}}>Add Cart</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <View style={{margin:"2%",flexDirection:"row"}}>
-                <View style={{margin:"2%",width:200}}>
-                    <Text style={{fontWeight:"bold",fontSize:15}}>Chocolate Truffled Cake (200gm)</Text>
-                    <View style={{margin:5,height:20,width:100,flexDirection:"row"}}>
-                        <Ionicons name="star" size={15} color="gold" />
-                        <Ionicons name="star" size={15} color="gold" />
-                        <Ionicons name="star" size={15} color="gold" />
-                        <Ionicons name="star" size={15} color="gold" />
-                        <Ionicons name="star" size={15} color="grey" />
-                        <Text style={{fontWeight:"bold",color:"grey"}}>8 reviews</Text>
-                    </View>
-                    <Text style={{fontWeight:"bold",fontSize:15}}>₹800/-</Text>
-                    <Text>customization available superfast delivery, fat reducer,milk product</Text>
-                </View>
-                <View style={{marginLeft:"auto"}}>
-                    <View style={{width:120,margin:5,height:100,borderRadius:15}}>
-                        <Image source={require("./images/stores/store.jpg")} style={{width:120,height:100,borderRadius:15}} />
-                    </View>
-                    <TouchableOpacity style={{borderWidth:1,height:30,margin:5,borderRadius:10,backgroundColor:"#f74862",borderColor:"#f74862"}}>
-                            <Text style={{padding:5,textAlign:"center",fontWeight:"bold",color:"white"}}>Add Cart</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <View style={{margin:"2%",flexDirection:"row"}}>
-                <View style={{margin:"2%",width:200}}>
-                    <Text style={{fontWeight:"bold",fontSize:15}}>Chocolate Truffled Cake (200gm)</Text>
-                    <View style={{margin:5,height:20,width:100,flexDirection:"row"}}>
-                        <Ionicons name="star" size={15} color="gold" />
-                        <Ionicons name="star" size={15} color="gold" />
-                        <Ionicons name="star" size={15} color="gold" />
-                        <Ionicons name="star" size={15} color="gold" />
-                        <Ionicons name="star" size={15} color="grey" />
-                        <Text style={{fontWeight:"bold",color:"grey"}}>8 reviews</Text>
-                    </View>
-                    <Text style={{fontWeight:"bold",fontSize:15}}>₹800/-</Text>
-                    <Text>customization available superfast delivery, fat reducer,milk product</Text>
-                </View>
-                <View style={{marginLeft:"auto"}}>
-                    <View style={{width:120,margin:5,height:100,borderRadius:15}}>
-                        <Image source={require("./images/stores/store.jpg")} style={{width:120,height:100,borderRadius:15}} />
-                    </View>
-                    <TouchableOpacity style={{borderWidth:1,height:30,margin:5,borderRadius:10,backgroundColor:"#f74862",borderColor:"#f74862"}}>
-                            <Text style={{padding:5,textAlign:"center",fontWeight:"bold",color:"white"}}>Add Cart</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <View style={{margin:"2%",flexDirection:"row"}}>
-                <View style={{margin:"2%",width:200}}>
-                    <Text style={{fontWeight:"bold",fontSize:15}}>Chocolate Truffled Cake (200gm)</Text>
-                    <View style={{margin:5,height:20,width:100,flexDirection:"row"}}>
-                        <Ionicons name="star" size={15} color="gold" />
-                        <Ionicons name="star" size={15} color="gold" />
-                        <Ionicons name="star" size={15} color="gold" />
-                        <Ionicons name="star" size={15} color="gold" />
-                        <Ionicons name="star" size={15} color="grey" />
-                        <Text style={{fontWeight:"bold",color:"grey"}}>8 reviews</Text>
-                    </View>
-                    <Text style={{fontWeight:"bold",fontSize:15}}>₹800/-</Text>
-                    <Text>customization available superfast delivery, fat reducer,milk product</Text>
-                </View>
-                <View style={{marginLeft:"auto"}}>
-                    <View style={{width:120,margin:5,height:100,borderRadius:15}}>
-                        <Image source={require("./images/stores/store.jpg")} style={{width:120,height:100,borderRadius:15}} />
-                    </View>
-                    <TouchableOpacity style={{borderWidth:1,height:30,margin:5,borderRadius:10,backgroundColor:"#f74862",borderColor:"#f74862"}}>
-                            <Text style={{padding:5,textAlign:"center",fontWeight:"bold",color:"white"}}>Add Cart</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            
             <View style={{margin:"2%",height:30}}>
 
             </View>
@@ -160,11 +70,11 @@ const StoreMenu=({navigation})=>{
             <ScrollView>
                 <View style={{borderWidth:1,margin:"3%",borderRadius:10,backgroundColor:"white",borderColor:"white",flexDirection:"row"}}>
                         <View style={{width:250}}>
-                            <Text style={{marginTop:"5%",marginLeft:"5%",fontSize:22,fontWeight:"bold"}}>Saravana Stores</Text>
-                            <Text style={{fontSize:15,marginTop:"2%",marginLeft:"5%",color:"#bbbdbf",fontWeight:"bold"}} numberOfLines={1}>Departmental Stores</Text>
-                            <Text style={{fontSize:15,marginTop:"2%",marginLeft:"5%",color:"#bbbdbf",fontWeight:"bold"}} numberOfLines={1}>Coimbatore,India</Text>
+                            <Text style={{marginTop:"5%",marginLeft:"5%",fontSize:22,fontWeight:"bold"}}>{route.params.storeid.store_name}</Text>
+                            <Text style={{fontSize:15,marginTop:"2%",marginLeft:"5%",color:"#bbbdbf",fontWeight:"bold"}} numberOfLines={1}>{route.params.storeid.store_nature}</Text>
+                            <Text style={{fontSize:15,marginTop:"2%",marginLeft:"5%",color:"#bbbdbf",fontWeight:"bold"}} numberOfLines={1}>{route.params.storeid.store_location},India</Text>
                             <View>
-                                <Text style={{fontSize:13,marginTop:"2%",marginLeft:"5%",fontWeight:"bold"}} numberOfLines={1}><AntDesign name="clockcircle" size={15} color="#f24c27" /> 37 min  | 5km away</Text>
+                                <Text style={{fontSize:13,marginTop:"2%",marginLeft:"5%",fontWeight:"bold"}} numberOfLines={1}><AntDesign name="clockcircle" size={15} color="#f24c27" /> 4 hrs | Around 5km away</Text>
                             </View>
                         </View>
                         <View style={{marginLeft:"auto"}}>

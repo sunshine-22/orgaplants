@@ -1,9 +1,11 @@
 
-import { View,SafeAreaView,Image,Text, TextInput, TouchableOpacity, Alert} from "react-native";
+import { View,SafeAreaView,Image,Text, TextInput, TouchableOpacity, Alert,KeyboardAvoidingView,ScrollView} from "react-native";
 import style from "./style";
 import { useState,useEffect, useRef } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const OtpEnter=({route,navigation})=>{
-    const [otptimer,settimer]=useState(30)
+    console.log(route.params)
+    const [otptimer,settimer]=useState(80)
     const [sendnumber,setsendnumber]=useState("")
     const [otp1,setotp1]=useState("")
     const [otp2,setotp2]=useState("")
@@ -13,6 +15,11 @@ const OtpEnter=({route,navigation})=>{
     const pin2=useRef("")
     const pin3=useRef("")
     const pin4=useRef("")
+    const resendotp=()=>{
+        if(otptimer===0){
+            navigation.goBack()
+        }
+    }
     useEffect(()=>{
         var countrycode=route.params.usermobile.slice(0,4)
         var invisible="*******"
@@ -34,8 +41,37 @@ const OtpEnter=({route,navigation})=>{
     const verifyotp=()=>{
         const otp=otp1+otp2+otp3+otp4
         console.log(otp)
-        if(otp=="1234"){
-            navigation.reset({index:0,routes:[{name:"Location"}]});
+        if(otp==route.params.generatedotp){
+            fetch("http://172.20.10.5:8000/saveuser/",{
+                method:"POST",
+                mode:"no-cors",
+                headers:{
+                    Accept: 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({
+                    _id:route.params.usermobile
+                })
+            }).then((response)=>response.json())
+            .then((responseData)=>{
+                console.log(responseData)
+                if(responseData.message=="success"){
+                    var userkey=route.params.usermobile
+                    navigation.reset({index:0,routes:[{name:"Location",params:{userkey}}]});
+                }
+                else if(responseData.message=="userexist"){
+                    const storedata= async ()=>{
+                         await AsyncStorage.setItem('useridentity', route.params.usermobile)
+                    }
+                    storedata();
+                    navigation.reset({index:0,routes:[{name:"Dashboard",params:{usernameid:route.params.usermobile}}]})
+
+                }
+                else{
+                    Alert.alert("info","Sorry something went wrong!Try again Later")
+                }
+            })
+           
         }
         else{
             Alert.alert("Oops,!","You have entered wrong Otp,Please check...")
@@ -43,7 +79,8 @@ const OtpEnter=({route,navigation})=>{
     }
       
     return(
-        <SafeAreaView>
+        <ScrollView>
+            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} >
             <View style={style.imagearea}>
                 <Image source={require("./images/logo/logo.png")} style={style.logoimageotp} />
             </View>
@@ -66,7 +103,7 @@ const OtpEnter=({route,navigation})=>{
                 </View>
             </View>
             <View style={{margin:"5%",flexDirection:"row",justifyContent:"center"}}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={resendotp}>
                         <Text style={{textAlign:"center",fontWeight:"bold",fontSize:17,color:"#fc6f4c"}}>Resend</Text>
                 </TouchableOpacity>
                
@@ -78,7 +115,8 @@ const OtpEnter=({route,navigation})=>{
                     <Text style={{textAlign:"center",paddingTop:12,fontWeight:"bold",color:"white"}}>Verify & Proceed</Text>
                 </TouchableOpacity>
             </View>
-        </SafeAreaView>
+            </KeyboardAvoidingView>
+        </ScrollView>
         
     )
 }
