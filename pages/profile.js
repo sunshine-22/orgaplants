@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const Profile=({navigation,route})=>{
-    console.log(route)
+    
     const Logout=()=>{
         Alert.alert("Logout","Are you sure you want to logout",[
             {

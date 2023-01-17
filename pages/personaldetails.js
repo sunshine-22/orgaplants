@@ -4,14 +4,14 @@ import { SafeAreaView, View,Text, TextInput,TouchableOpacity, Alert,ActivityIndi
 import style from "./style";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const PersonalDetails=({navigation,route})=>{
-    console.log(route)
+  
     const[username,setname]=useState(null)
     const[email,setemail]=useState(null)
     const [isloading,setisloading]=useState(false)
     const savedetails=()=>{
         setisloading(!isloading)
             if(username!=null && email!=null){
-                fetch("http://172.20.10.5:8000/updateuser/",{
+                fetch("http://192.168.1.104:8000/updateuser/",{
                     method:"POST",
                     mode:"no-cors",
                     headers:{

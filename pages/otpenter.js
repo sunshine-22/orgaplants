@@ -4,7 +4,7 @@ import style from "./style";
 import { useState,useEffect, useRef } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const OtpEnter=({route,navigation})=>{
-    console.log(route.params)
+   
     const [otptimer,settimer]=useState(80)
     const [sendnumber,setsendnumber]=useState("")
     const [otp1,setotp1]=useState("")
@@ -40,9 +40,9 @@ const OtpEnter=({route,navigation})=>{
     },[])
     const verifyotp=()=>{
         const otp=otp1+otp2+otp3+otp4
-        console.log(otp)
+     
         if(otp==route.params.generatedotp){
-            fetch("http://172.20.10.5:8000/saveuser/",{
+            fetch("http://192.168.1.104:8000/saveuser/",{
                 method:"POST",
                 mode:"no-cors",
                 headers:{
@@ -54,7 +54,7 @@ const OtpEnter=({route,navigation})=>{
                 })
             }).then((response)=>response.json())
             .then((responseData)=>{
-                console.log(responseData)
+               
                 if(responseData.message=="success"){
                     var userkey=route.params.usermobile
                     navigation.reset({index:0,routes:[{name:"Location",params:{userkey}}]});
@@ -99,7 +99,7 @@ const OtpEnter=({route,navigation})=>{
                     <TextInput style={{padding:15,fontWeight:"bold",fontSize:20}} keyboardType={"numeric"} maxLength={1} onChangeText={(text)=>{setotp3(text),pin4.current.focus();}} ref={pin3}></TextInput>
                 </View>
                 <View style={{borderWidth:1,height:55,width:55,margin:"5%",borderRadius:13}}>
-                    <TextInput style={{padding:15,fontWeight:"bold",fontSize:20}} keyboardType={"default"} maxLength={1} onChangeText={(text)=>{setotp4(text);}} ref={pin4}></TextInput>
+                    <TextInput style={{padding:15,fontWeight:"bold",fontSize:20}} keyboardType={"numeric"} maxLength={1} onChangeText={(text)=>{setotp4(text);}} ref={pin4}></TextInput>
                 </View>
             </View>
             <View style={{margin:"5%",flexDirection:"row",justifyContent:"center"}}>

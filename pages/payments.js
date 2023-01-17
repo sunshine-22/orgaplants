@@ -6,7 +6,7 @@ import { useState } from "react";
 import * as Locations from 'expo-location';
 import { AntDesign } from '@expo/vector-icons';
 const Payment=({route})=>{
-    console.log(route)
+
     const [modalvisible,setmodalvisible]=useState(false)
     const [addressdata,setaddressadata]=useState(0)
     const [location, setLocation] = useState(null);
@@ -14,7 +14,7 @@ const Payment=({route})=>{
     const [reload,setreload]=useState(false)
     var dispalyaddresses=[]
     const deleteaddress=(deleteid)=>{
-        console.log(deleteid)
+
         Alert.alert("Info","Are you sure you want to Delete",[
             {
                 text:"cancel",
@@ -22,7 +22,7 @@ const Payment=({route})=>{
                 style:"cancel"
             },
             { text: "OK", onPress: async() => {
-                fetch("http://172.20.10.5:8000/delete_user_address/",{
+                fetch("http://192.168.1.104:8000/delete_user_address/",{
                     method:"POST",
                     mode:"no-cors",
                     headers:{
@@ -44,7 +44,7 @@ const Payment=({route})=>{
         ])
     }
     useEffect(()=>{
-        fetch("http://172.20.10.5:8000/getuseraddresses/",{
+        fetch("http://192.168.1.104:8000/getuseraddresses/",{
             method:"POST",
             mode:"no-cors",
             headers:{
@@ -74,7 +74,7 @@ const Payment=({route})=>{
 
       let location = await Locations.getCurrentPositionAsync({});
       setLocation(location);
-      fetch("http://172.20.10.5:8000/livelocation/",{
+      fetch("http://192.168.1.104:8000/livelocation/",{
         method:"POST",
         mode:"no-cors",
         headers:{

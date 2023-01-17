@@ -49,7 +49,7 @@ const Dashboard=({navigation,route})=>{
         }
 
         let location = await Locations.getCurrentPositionAsync({});
-        fetch("http://172.20.10.5:8000/livelocation/",{
+        fetch("http://192.168.1.104:8000/livelocation/",{
             method:"POST",
             mode:"no-cors",
             headers:{
@@ -91,7 +91,7 @@ const Dashboard=({navigation,route})=>{
 
             let location = await Locations.getCurrentPositionAsync({});
             setLocation(location);
-                 fetch("http://172.20.10.5:8000/liveuser/",{
+                 fetch("http://192.168.1.104:8000/liveuser/",{
                     method:"POST",
                     mode:"no-cors",
                     headers:{
@@ -104,7 +104,6 @@ const Dashboard=({navigation,route})=>{
                     })
                     }).then((response)=>response.json())
                     .then((responseData)=>{
-                        console.log(responseData)
                         setusercity(responseData)
                     if(responseData.message=="failed"){
                         setdisplaypage(true)
@@ -120,7 +119,7 @@ const Dashboard=({navigation,route})=>{
                 })
         }
         function getuserdata(){
-            fetch("http://172.20.10.5:8000/getuserdata/",{
+            fetch("http://192.168.1.104:8000/getuserdata/",{
                 method:"POST",
                 mode:"no-cors",
                 headers:{
@@ -132,7 +131,7 @@ const Dashboard=({navigation,route})=>{
                 })
             }).then((response)=>response.json())
             .then((responseData)=>{
-                console.log(responseData)
+             
                 settextactivity("almost Done")
                 setuserfetchdata(responseData)
                 setdisplaypage(true)
@@ -157,7 +156,7 @@ const Dashboard=({navigation,route})=>{
                     </TouchableOpacity>
                     
                     <View style={{flexDirection:"row",position:"absolute",right:0}}>
-                        <TouchableOpacity onPress={()=>navigation.navigate("Cart")}>
+                        <TouchableOpacity onPress={()=>navigation.navigate("Cart",{delivery_location:usercity})}>
                             <View style={{margin:5,marginRight:15}}>
                                 <Ionicons name="cart-outline" size={35} color="#838584" />
                             </View>

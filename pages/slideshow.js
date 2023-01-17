@@ -6,7 +6,7 @@ const SlideShow=()=>{
     const [banner,setbanner]=useState(<Image source={require("./images/logo/babber1.jpg")} style={{height:200,width:355,borderRadius:15}}/>)
     var bannerdata=[]
     useEffect(()=>{
-        fetch("http://172.20.10.5:8000/offerbanners/",{
+        fetch("http://192.168.1.104:8000/offerbanners/",{
             method:"GET",
             mode:"no-cors",
             headers:{
@@ -26,10 +26,12 @@ const SlideShow=()=>{
             
         })
     },[])
-    // setInterval(()=>{
-    //     slide();
-
-    // },5000)
+    useEffect(() => {
+        const interval = setInterval(() => {
+          slide();
+        }, 10000);
+        return () => clearInterval(interval);
+      }, []);
     function slide(){
             var randombanner=Math.floor(Math.random() * bannerdata.length)
             setbanner(<Image source={{uri:bannerdata[randombanner]}} style={{height:200,width:355,borderRadius:15}}/>)

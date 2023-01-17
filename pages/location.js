@@ -4,10 +4,36 @@ import style from "./style";
 import { Ionicons } from '@expo/vector-icons';
 import * as Locations from 'expo-location';
 const Location=({navigation,route})=>{
-    console.log(route)
+
     const [modalvisible,setmodalvisible]=useState(false)
     const [location, setLocation] = useState(null);
     const [isloading,setisloading]=useState(false)
+    const [area,setarea]=useState(null)
+    const [district,setdistrict]=useState(null)
+    const [landmark,setlandmark]=useState(null)
+    const [state,setstate]=useState(null)
+    const [pincode,setpincode]=useState(null)
+    const saveaddress=()=>{
+        if(area!=null && district!=null && landmark!=null && state!=null && pincode!=null){
+            const mannual_address={
+                area:area,
+                district:district,
+                landmark:landmark,
+                state:state,
+                pincode:pincode
+            }
+    
+            setmodalvisible(false)
+            navigation.navigate("PersonalDetails",{userid:route.params.userkey})
+
+        }
+        else{
+            Alert.alert("info","please fillout all the required fields")
+            setmodalvisible(false)
+        }
+      
+        
+    }
     const locationaccess=async ()=>{
         setisloading(!isloading)
         let { status } = await Locations.requestForegroundPermissionsAsync();
@@ -18,8 +44,8 @@ const Location=({navigation,route})=>{
 
       let location = await Locations.getCurrentPositionAsync({});
       setLocation(location);
-      console.log(location)
-      fetch("http://172.20.10.5:8000/livelocation/",{
+   
+      fetch("http://192.168.1.104:8000/livelocation/",{
         method:"POST",
         mode:"no-cors",
         headers:{
@@ -66,28 +92,53 @@ const Location=({navigation,route})=>{
             </View>
             <View style={{flex:1,backgroundColor:"white"}}>
                 <Modal visible={modalvisible}  animationType="fade">
-                    <View style={{margin:"5%"}}>
-                        <TouchableOpacity onPress={()=>setmodalvisible(false)}>
-                            <Ionicons name="arrow-back" size={45} color="black" />
-                        </TouchableOpacity>
-                        <View style={{marginTop:"5%"}}>
-                            <Text style={{fontWeight:"bold",fontSize:18}}>Enter your Area or apartment name</Text>
+                <View style={{backgroundColor:"#ededed",flex:1}}>
+                        <View style={{height:150,backgroundColor:"#252324"}} >
+                            
                         </View>
-                        <View style={{marginTop:"5%",borderWidth:1,height:50,borderRadius:15,flexDirection:"row"}}>
-                            <View style={{padding:12}}>
-                                <Ionicons name="search" size={24} color="black" />
+                        <View style={{backgroundColor:"#252324"}}>
+                            <View style={{backgroundColor:"#ededed",marginTop:5,borderTopLeftRadius:10,borderTopRightRadius:10,flexDirection:"row"}}>
+                                <View style={{margin:"3%"}}>
+                                    <Text style={{fontSize:20,fontWeight:"bold",color:"grey"}}>Enter Address Mannually</Text>
+                                </View>
+                                <TouchableOpacity style={{margin:"2%",marginLeft:"auto"}} onPress={()=>setmodalvisible(false)}>
+                                    <Ionicons name="close" size={34} color="#fc6f4c" />
+                                </TouchableOpacity>
                             </View>
-                           
-                            <TextInput placeholder="Try Gandhinagar,Dharmapuri,etc.." style={{padding:12}}></TextInput>
-                        </View>
-                        <View style={{marginTop:"5%",flexDirection:"row"}}>
-                            <View>
-                                <Ionicons name="navigate-circle-sharp" size={35} color="#fc6f4c" />
+                            <View style={{backgroundColor:"#ededed"}}>
+                                <View style={{margin:"3%",borderWidth:1,height:40,borderRadius:10}}>
+                                    <TextInput placeholder="Area" placeholderTextColor={"grey"} style={{padding:10,fontWeight:"bold",fontSize:15}}onChangeText={(text)=>setarea(text)}></TextInput>
+                                </View>
+                                <View style={{margin:"3%",borderWidth:1,height:40,borderRadius:10}}>
+                                    <TextInput placeholder="landmark" placeholderTextColor={"grey"} style={{padding:10,fontWeight:"bold",fontSize:15}} onChangeText={(text)=>setlandmark(text)}></TextInput>
+                                </View>
+                                <View style={{margin:"3%",borderWidth:1,height:40,borderRadius:10}}>
+                                    <TextInput placeholder="City" placeholderTextColor={"grey"} style={{padding:10,fontWeight:"bold",fontSize:15}}onChangeText={(text)=>setdistrict(text)}></TextInput>
+                                </View>
+                                <View style={{flexDirection:"row"}}>
+                                    <View style={{margin:"3%",borderWidth:1,height:40,borderRadius:10,width:"45%"}}>
+                                        <TextInput placeholder="State" placeholderTextColor={"grey"} style={{padding:10,fontWeight:"bold",fontSize:15}} onChangeText={(text)=>setstate(text)}></TextInput>
+                                    </View>
+                                    <View style={{margin:"3%",borderWidth:1,height:40,borderRadius:10,width:"45%"}}>
+                                    <TextInput placeholder="Pincode" placeholderTextColor={"grey"} style={{padding:10,fontWeight:"bold",fontSize:15}} onChangeText={(text)=>setpincode(text)} keyboardType={"numeric"} maxLength={6}></TextInput>
+                                    </View>
+                                </View>
+                                <View style={{margin:"1%",alignItems:"center",marginTop:"5%"}}>
+                                    <TouchableOpacity style={{borderWidth:1,width:"90%",height:50,borderRadius:13,backgroundColor:"#fc6f4c",borderColor:"#fc6f4c"}} onPress={saveaddress}>
+                                        <Text style={{textAlign:"center",paddingTop:12,fontWeight:"bold",color:"white"}}>Save and Add address</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{margin:"1%",alignItems:"center",marginTop:"5%"}}>
+                                    <TouchableOpacity style={{borderWidth:1,width:"90%",height:50,borderRadius:13,borderColor:"#ededed"}} onPress={locationaccess}>
+                                        <Text style={{textAlign:"center",paddingTop:12,fontWeight:"bold",color:"#fc6f4c"}}>Enable my Current Location</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{marginTop:"3%"}}>
+                                {isloading && <ActivityIndicator size={"large"} color="orange"/>}
+                                </View>
                             </View>
-                            <TouchableOpacity style={{width:"90%",backgroundColor:"white",  borderColor:"white"}}>
-                                <Text style={{fontWeight:"bold",color:"#fc6f4c",marginLeft:"3%",paddingTop:5,fontSize:18}}>Use My current Location</Text>
-                            </TouchableOpacity>
                         </View>
+                        
                     </View>
                 </Modal>
             </View>

@@ -5,11 +5,27 @@ import { Ionicons } from '@expo/vector-icons';
 import Stores from "./stores";
 import { useScrollToTop } from "@react-navigation/native";
 const FeaturedStore=({navigation,route})=>{
-
+    const[featuredstore1,setfeaturedstore1]=useState(0)
     const[featuredstore,setfeaturedstore]=useState(0)
     var displaycategorystore=[]
     useEffect(()=>{
-        fetch("http://172.20.10.5:8000/get_category_store/",{
+        fetch("http://192.168.1.104:8000/get_featuredstore/",{
+            method:"POST",
+            mode:"no-cors",
+            headers:{
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify({
+                auth_token:"Theonewhodetermines"
+            })
+        }).then((response)=>response.json())
+        .then((responseData)=>{
+            setfeaturedstore1(responseData)
+        })
+    },[])
+    useEffect(()=>{
+        fetch("http://192.168.1.104:8000/get_category_store/",{
             method:"POST",
             mode:"no-cors",
             headers:{
@@ -31,7 +47,7 @@ const FeaturedStore=({navigation,route})=>{
     },[])
     for(let i=0;i<featuredstore.length;i++){
         displaycategorystore.push(
-            <TouchableOpacity onPress={()=>navigation.navigate("StoreMenu",{storeid:"Sabarish"})} key={i}>
+            <TouchableOpacity onPress={()=>navigation.navigate("StoreMenu",{storeid:featuredstore1[i]})} key={i}>
                        
                     <View style={{flexDirection:"row",margin:5}} >
                         <Image source={{uri:featuredstore[i].store_image}} style={{width:150,height:150,borderRadius:10}} />

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView, View,Image,TouchableOpacity,Text } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 const Stores=({navigation,userlocation})=>{
-    console.log(userlocation)
     const [neatstores,setnearstores]=useState(0)
+    console.log(userlocation)
     var displaynearstore=[]
+
     useEffect(()=>{
-        fetch("http://172.20.10.5:8000/get_nearstore/",{
+        fetch("http://192.168.1.104:8000/get_nearstore/",{
             method:"POST",
             mode:"no-cors",
             headers:{
@@ -24,7 +25,7 @@ const Stores=({navigation,userlocation})=>{
     },[userlocation])
     for(let i=0;i<neatstores.length;i++){
         displaynearstore.push(
-            <TouchableOpacity onPress={()=>navigation.navigate("StoreMenu")} key={i}>
+            <TouchableOpacity onPress={()=>navigation.navigate("StoreMenu",{storeid:neatstores[i]})} key={i}>
                     <View style={{flexDirection:"row",margin:5,flex:1}} >
                         <Image source={{uri:neatstores[i].store_image}} style={{width:150,height:150,borderRadius:10}} />
                         <View style={{marginLeft:10,justifyContent:"center",flex:1}}>
