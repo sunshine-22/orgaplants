@@ -1,4 +1,4 @@
-import {React,useEffect,useState} from "react";
+import {React,useEffect,useState,memo} from "react";
 import { ScrollView, View ,Text, TouchableOpacity,Modal,TextInput,Image, SafeAreaView, Alert,ActivityIndicator} from "react-native";
 import style from "./style";
 import { Ionicons } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import Showcase from "./showcase";
 import FeaturedCase from "./featuredcase";
 import Stores from "./stores";
 import * as Locations from 'expo-location';
+
 const Dashboard=({navigation,route})=>{
     const [user_fetch_data,setuserfetchdata]=useState(0)
     const [displaypage,setdisplaypage]=useState(false)
@@ -20,6 +21,7 @@ const Dashboard=({navigation,route})=>{
     const [state,setstate]=useState(null)
     const [pincode,setpincode]=useState(null)
     const [isloading,setisloading]=useState(false)
+    
     const saveaddress=()=>{
         if(area!=null && district!=null && landmark!=null && state!=null && pincode!=null){
             const mannual_address={
@@ -49,7 +51,7 @@ const Dashboard=({navigation,route})=>{
         }
 
         let location = await Locations.getCurrentPositionAsync({});
-        fetch("http://192.168.1.104:8000/livelocation/",{
+        fetch("http://52.66.225.96/livelocation/",{
             method:"POST",
             mode:"no-cors",
             headers:{
@@ -82,6 +84,7 @@ const Dashboard=({navigation,route})=>{
     }
     useEffect(()=>{
         async function getlocation(){
+                
             settextactivity("getting your location")
             let { status } = await Locations.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
@@ -91,7 +94,7 @@ const Dashboard=({navigation,route})=>{
 
             let location = await Locations.getCurrentPositionAsync({});
             setLocation(location);
-                 fetch("http://192.168.1.104:8000/liveuser/",{
+                 fetch("http://52.66.225.96/liveuser/",{
                     method:"POST",
                     mode:"no-cors",
                     headers:{
@@ -104,6 +107,8 @@ const Dashboard=({navigation,route})=>{
                     })
                     }).then((response)=>response.json())
                     .then((responseData)=>{
+                        
+               
                         setusercity(responseData)
                     if(responseData.message=="failed"){
                         setdisplaypage(true)
@@ -119,7 +124,7 @@ const Dashboard=({navigation,route})=>{
                 })
         }
         function getuserdata(){
-            fetch("http://192.168.1.104:8000/getuserdata/",{
+            fetch("http://52.66.225.96/getuserdata/",{
                 method:"POST",
                 mode:"no-cors",
                 headers:{
@@ -145,12 +150,12 @@ const Dashboard=({navigation,route})=>{
     return(
         <SafeAreaView style={style.backgroundcolor}>
            {displaypage &&(<View>
-            <View style={{marginTop:"1%",marginLeft:"5%",marginRight:"5%",borderBottomRightRadius:15,borderBottomLeftRadius:15}}>
+            <View style={{marginTop:"10%",marginLeft:"5%",marginRight:"5%",borderBottomRightRadius:15,borderBottomLeftRadius:15}}>
                 <View style={{marginTop:"1%",flexDirection:"row"}}>
                     <Ionicons name="location-outline" size={35} color="#fc6f4c" />
                     <TouchableOpacity onPress={()=>setmodalvisible(true)}>
                         <View>
-                            <Text style={{fontWeight:"bold",fontSize:15}}>{usercity.landmark}<Ionicons name="chevron-down-outline" size={18} color="black" /></Text>
+                            <Text style={{fontWeight:"bold",fontSize:13}}>{usercity.landmark}<Ionicons name="chevron-down-outline" size={18} color="black" /></Text>
                             <Text style={{fontSize:10}}>{usercity.district},{usercity.state}, India</Text>
                         </View>
                     </TouchableOpacity>
@@ -203,6 +208,9 @@ const Dashboard=({navigation,route})=>{
                 <View style={{marginTop:"5%"}}>
                     <Text style={{fontWeight:"bold",fontSize:20}}>Partner Stores around you...</Text>
                     <Stores navigation={navigation} userlocation={usercity}></Stores>
+                </View>
+                <View style={{marginTop:"15%"}}>
+
                 </View>
             </ScrollView>
             {/* location service of modal view */}
@@ -275,4 +283,4 @@ const Dashboard=({navigation,route})=>{
     )
 }
 
-export default Dashboard;
+export default memo(Dashboard);

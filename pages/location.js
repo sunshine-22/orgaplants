@@ -45,7 +45,7 @@ const Location=({navigation,route})=>{
       let location = await Locations.getCurrentPositionAsync({});
       setLocation(location);
    
-      fetch("http://192.168.1.104:8000/livelocation/",{
+      fetch("http://52.66.225.96/livelocation/",{
         method:"POST",
         mode:"no-cors",
         headers:{

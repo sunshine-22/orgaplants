@@ -7,7 +7,7 @@ const FeaturedCase=({navigation})=>{
     const [featuredstore,setfeaturedstore]=useState(0)
     var displayfeaturedstore=[]
    useEffect(()=>{
-    fetch("http://192.168.1.104:8000/get_featuredstore/",{
+    fetch("http://52.66.225.96/get_featuredstore/",{
         method:"POST",
         mode:"no-cors",
         headers:{

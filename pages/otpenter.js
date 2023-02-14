@@ -1,5 +1,5 @@
 
-import { View,SafeAreaView,Image,Text, TextInput, TouchableOpacity, Alert,KeyboardAvoidingView,ScrollView} from "react-native";
+import { View,SafeAreaView,Image,Text, TextInput, TouchableOpacity, Alert,KeyboardAvoidingView,ScrollView,ActivityIndicator} from "react-native";
 import style from "./style";
 import { useState,useEffect, useRef } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,6 +15,7 @@ const OtpEnter=({route,navigation})=>{
     const pin2=useRef("")
     const pin3=useRef("")
     const pin4=useRef("")
+    const [isloading,setisloading]=useState(false)
     const resendotp=()=>{
         if(otptimer===0){
             navigation.goBack()
@@ -39,10 +40,11 @@ const OtpEnter=({route,navigation})=>{
 
     },[])
     const verifyotp=()=>{
+        setisloading(true)
         const otp=otp1+otp2+otp3+otp4
      
         if(otp==route.params.generatedotp){
-            fetch("http://192.168.1.104:8000/saveuser/",{
+            fetch("http://52.66.225.96/saveuser/",{
                 method:"POST",
                 mode:"no-cors",
                 headers:{
@@ -56,6 +58,7 @@ const OtpEnter=({route,navigation})=>{
             .then((responseData)=>{
                
                 if(responseData.message=="success"){
+                    setisloading(false)
                     var userkey=route.params.usermobile
                     navigation.reset({index:0,routes:[{name:"Location",params:{userkey}}]});
                 }
@@ -63,17 +66,20 @@ const OtpEnter=({route,navigation})=>{
                     const storedata= async ()=>{
                          await AsyncStorage.setItem('useridentity', route.params.usermobile)
                     }
+                    setisloading(false)
                     storedata();
                     navigation.reset({index:0,routes:[{name:"Dashboard",params:{usernameid:route.params.usermobile}}]})
 
                 }
                 else{
+                    setisloading(false)
                     Alert.alert("info","Sorry something went wrong!Try again Later")
                 }
             })
            
         }
         else{
+            setisloading(false)
             Alert.alert("Oops,!","You have entered wrong Otp,Please check...")
         }
     }
@@ -111,7 +117,9 @@ const OtpEnter=({route,navigation})=>{
         
             </View>
             <View style={{margin:"1%",alignItems:"center"}}>
+            
                 <TouchableOpacity style={{borderWidth:1,width:"90%",height:50,borderRadius:13,backgroundColor:"#fc6f4c",borderColor:"#fc6f4c"}} onPress={verifyotp}>
+                {isloading && <ActivityIndicator size={"large"} color="white"/>}
                     <Text style={{textAlign:"center",paddingTop:12,fontWeight:"bold",color:"white"}}>Verify & Proceed</Text>
                 </TouchableOpacity>
             </View>

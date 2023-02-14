@@ -3,6 +3,7 @@ import { SafeAreaView, View,Image,Text, TouchableOpacity,Alert,Linking } from "r
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { memo } from "react";
 const Profile=({navigation,route})=>{
     
     const Logout=()=>{
@@ -87,7 +88,7 @@ const Profile=({navigation,route})=>{
                 </View>
 
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{Linking.openURL("https://tawk.to/chat/634902f037898912e96e92bc/1gfaj6ver")}}>
+            <TouchableOpacity onPress={()=>{Linking.openURL("https://api.whatsapp.com/send/?phone=%2B919900755502&text&type=phone_number&app_absent=0")}}>
                 <View style={{borderWidth:1,margin:"3%",borderRadius:10,backgroundColor:"white",borderColor:"white",flexDirection:"row",flexDirection:"row"}}>
                     <View style={{margin:"2%"}}>
                         <MaterialIcons name="support-agent" size={24} color="black" />
@@ -133,4 +134,4 @@ const Profile=({navigation,route})=>{
     )
 }
 
-export default Profile;
+export default memo(Profile);

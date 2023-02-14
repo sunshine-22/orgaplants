@@ -11,7 +11,7 @@ const PersonalDetails=({navigation,route})=>{
     const savedetails=()=>{
         setisloading(!isloading)
             if(username!=null && email!=null){
-                fetch("http://192.168.1.104:8000/updateuser/",{
+                fetch("http://52.66.225.96/updateuser/",{
                     method:"POST",
                     mode:"no-cors",
                     headers:{

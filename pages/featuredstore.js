@@ -5,11 +5,13 @@ import { Ionicons } from '@expo/vector-icons';
 import Stores from "./stores";
 import { useScrollToTop } from "@react-navigation/native";
 const FeaturedStore=({navigation,route})=>{
+   
     const[featuredstore1,setfeaturedstore1]=useState(0)
     const[featuredstore,setfeaturedstore]=useState(0)
     var displaycategorystore=[]
+    const [displaypage,setdisplaypage]=useState(true)
     useEffect(()=>{
-        fetch("http://192.168.1.104:8000/get_featuredstore/",{
+        fetch("http://52.66.225.96/get_featuredstore/",{
             method:"POST",
             mode:"no-cors",
             headers:{
@@ -25,7 +27,7 @@ const FeaturedStore=({navigation,route})=>{
         })
     },[])
     useEffect(()=>{
-        fetch("http://192.168.1.104:8000/get_category_store/",{
+        fetch("http://52.66.225.96/get_category_store/",{
             method:"POST",
             mode:"no-cors",
             headers:{
@@ -38,7 +40,15 @@ const FeaturedStore=({navigation,route})=>{
         }).then((response)=>response.json())
         .then((responseData)=>{
             if(responseData.message!="failed"){
-                setfeaturedstore(responseData)
+                if(responseData.length==0){
+                    setdisplaypage(false)
+
+                }
+                else{
+                    setfeaturedstore(responseData)
+
+                }
+                
             }
             
             
@@ -74,10 +84,21 @@ const FeaturedStore=({navigation,route})=>{
     }
     return(
         <SafeAreaView style={style.backgroundcolor}>
-            <View style={{marginTop:"5%"}}>
+            {displaypage && (
+                <View style={{marginTop:"5%"}}>
                 
                 {displaycategorystore}
             </View>
+
+            )}
+            {!displaypage &&(
+                <View>
+                    <View style={{alignItems:"center",marginTop:"10%"}}>
+                        <Image source={require("./images/stores/empty.gif")} style={{width:"100%",height:300}} />
+                    </View>
+                </View>
+            )}
+            
 
         </SafeAreaView>
         

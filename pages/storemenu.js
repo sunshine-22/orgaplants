@@ -5,6 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { SimpleAccordion } from 'react-native-simple-accordion';
 import { Entypo } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import style from "./style";
 const StoreMenu=({navigation,route})=>{
     const [store_found,set_Storefound]=useState(false)
     const [orderdesc,setorderdesc]=useState(false)
@@ -17,10 +18,10 @@ const StoreMenu=({navigation,route})=>{
     const [isloading,setisloading]=useState(false)
     const [user,setuser]=useState(null)
     var displayrecomentas=[]
-  
+   
     useEffect(()=>{
        function get_store_details(){
-            fetch("http://192.168.1.104:8000/go_to_store/",{
+            fetch("http://52.66.225.96/go_to_store/",{
                 method:"POST",
                 mode:"no-cors",
                 headers:{
@@ -33,14 +34,20 @@ const StoreMenu=({navigation,route})=>{
                 })
             }).then((response)=>response.json())
             .then(async (responseData)=>{
-                setstoredata(responseData.message);
-                set_Storefound(true)
-                let userdata= await AsyncStorage.getItem("useridentity");
-                setuser(userdata)
-                console.log(userdata)
                 if(responseData.message=="failed"){
                     Alert.alert("Info","sorry something went wrong")
                 }
+                else{
+                    
+                    setstoredata(responseData.message);
+                    set_Storefound(true)
+                    let userdata= await AsyncStorage.getItem("useridentity");
+                    setuser(userdata)
+
+                }
+                
+        
+                
             })
         }
         get_store_details();
@@ -144,7 +151,7 @@ const StoreMenu=({navigation,route})=>{
             add_cart.total_price=producttotal
             add_cart.user_key=user
             add_cart.expired=false
-            fetch("http://192.168.1.104:8000/add_cart/",{
+            fetch("http://52.66.225.96/add_cart/",{
                 method:"POST",
                 mode:"no-cors",
                 headers:{
@@ -172,9 +179,9 @@ const StoreMenu=({navigation,route})=>{
         }
    
     return(
-        <SafeAreaView>
+        <SafeAreaView >
             <View style={{margin:"3%",flexDirection:"row"}}>
-                <View>
+                {/* <View>
                     <TouchableOpacity onPress={()=>navigation.goBack()}>
                         <Ionicons name="arrow-back-outline" size={34} color="black" />
                     </TouchableOpacity>
@@ -191,16 +198,16 @@ const StoreMenu=({navigation,route})=>{
                         </View>
 
                     </TouchableOpacity>
-                    {/* <TouchableOpacity>
+                    <TouchableOpacity>
                         <View style={{marginLeft:5}}>
                             <Ionicons name="ios-list-circle-outline" size={45} color="#cfd0d1" />
                         </View>
-                    </TouchableOpacity> */}
-                </View>
+                    </TouchableOpacity>
+                </View> */}
                 
             </View>
             <ScrollView>
-                <View style={{borderWidth:1,margin:"3%",borderRadius:10,backgroundColor:"white",borderColor:"white",flexDirection:"row"}}>
+                <View style={{borderWidth:1,marginLeft:"3%",marginright:"3%",borderRadius:10,backgroundColor:"white",borderColor:"white",flexDirection:"row"}}>
                         <View style={{width:250}}>
                             <Text style={{marginTop:"5%",marginLeft:"5%",fontSize:22,fontWeight:"bold"}}>{route.params.storeid.store_name}</Text>
                             <Text style={{fontSize:15,marginTop:"2%",marginLeft:"5%",color:"#bbbdbf",fontWeight:"bold"}} numberOfLines={1}>{route.params.storeid.store_nature}</Text>
@@ -256,12 +263,12 @@ const StoreMenu=({navigation,route})=>{
             <View style={{flex:1}}>
                 <Modal visible={orderdesc} animationType={"slide"} >
                     <View style={{backgroundColor:"#ededed",flex:1}}>
-                        <TouchableOpacity style={{height:150,backgroundColor:"#252324"}} onPress={()=>setorderdesc(false)}>
-                            <View style={{alignItems:"center",marginTop:"15%"}}>
+                        <TouchableOpacity style={{height:100,backgroundColor:"#252324"}} onPress={()=>setorderdesc(false)}>
+                            <View style={{alignItems:"center",marginTop:"10%"}}>
                                 <Ionicons name="close-circle" size={45} color="white" />
                             </View>
                         </TouchableOpacity>
-                        <View style={{backgroundColor:"#252324"}}>
+                        <ScrollView style={{backgroundColor:"#252324"}}>
                             <View style={{backgroundColor:"#ededed",marginTop:5,borderTopLeftRadius:10,borderTopRightRadius:10}}>
                                 <View style={{margin:"3%",borderRadius:10,backgroundColor:"white"}}>
                                     <Image source={{uri:temp_cart_storage.Image}} style={{height:200,borderRadius:10,width:"100%"}}></Image>
@@ -306,8 +313,8 @@ const StoreMenu=({navigation,route})=>{
                                    
                                 </View>
                             </View>
-                        </View>
-                        <View style={{borderWidth:1,height:200,backgroundColor:"white",borderColor:"white"}}>
+                        </ScrollView>
+                        <View style={{borderWidth:1,height:70,backgroundColor:"white",borderColor:"white",margin:"2%",borderRadius:10}}>
                             <View style={{flexDirection:"row"}}>
                                 <View style={{margin:"3%",height:45,flexDirection:"row",borderColor:"red",borderWidth:1,borderRadius:10}}>
                                     <View style={{width:50}}>
@@ -332,7 +339,7 @@ const StoreMenu=({navigation,route})=>{
 
                                     </View>
                                 </View>
-                                <TouchableOpacity style={{margin:"3%",height:45,flexDirection:"row",borderColor:"red",borderWidth:1,borderRadius:10,width:170,backgroundColor:"red"}} onPress={generatecart}>
+                                <TouchableOpacity style={{margin:"3%",height:45,flexDirection:"row",borderColor:"red",borderWidth:1,borderRadius:10,width:170,backgroundColor:"red",marginLeft:"auto"}} onPress={generatecart}>
                                 {isloading && <ActivityIndicator size={"large"} color="white"/>}
                                     <View>
                                         <Text style={{fontWeight:"bold",fontSize:15,padding:10,color:"white"}}>Add item-₹{producttotal}</Text>

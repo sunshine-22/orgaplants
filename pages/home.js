@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { View,ScrollView,Text,Image, TextInput, TouchableOpacity, Alert,KeyboardAvoidingView } from "react-native";
+import { View,ScrollView,Text,Image, TextInput, TouchableOpacity, Alert,KeyboardAvoidingView,ActivityIndicator } from "react-native";
 import style from "./style"
 import {CountryPicker} from "react-native-country-codes-picker";
 import Privacy from "./privacy"
@@ -9,11 +9,13 @@ const Home=({navigation})=>{
     const [countryCode, setCountryCode] = useState('');
     const [show, setShow] = useState(false);
     const [mobilenumber,setmobilenumber]=useState('')
+    const [isloading,setisloading]=useState(false)
     const signin=async ()=>{
+        setisloading(true)
         if(countryCode!="" && mobilenumber!="" && mobilenumber.length==10){
             
             const number=countryCode+mobilenumber
-            fetch("http://192.168.1.104:8000/registeruser/",{
+            fetch("http://52.66.225.96/registeruser/",{
                 method:"POST",
                 mode:"no-cors",
                 headers:{
@@ -26,9 +28,11 @@ const Home=({navigation})=>{
             }).then((response)=>response.json())
             .then((responseData)=>{
                 if(responseData.message=="success"){
+                    setisloading(false)
                     navigation.navigate("OtpEnter",{usermobile:number,generatedotp:responseData.otp});
                 }
                 else{
+                    setisloading(false)
                     Alert.alert("Info",responseData.message)
                 }
             })
@@ -44,7 +48,7 @@ const Home=({navigation})=>{
         <ScrollView style={style.backgroundcolor}>
             
             <View style={style.imagearea}>
-                <Image source={require("./images/logo/logo.jpg")} style={style.logoimage}/>
+                <Image source={require("./images/logo/logo.png")} style={style.logoimage}/>
             </View>
             <View style={style.loginscreentext}>
                 <Text style={style.logintext}>Shop locally from trusted and reliable stores...</Text>
@@ -70,7 +74,9 @@ const Home=({navigation})=>{
             </View>
             <CountryPicker show={show} pickerButtonOnPress={(item) => {setCountryCode(item.dial_code);setShow(false);setplacevalue(item.dial_code);}}/>
             <View style={{margin:"1%",alignItems:"center"}}>
+            
                 <TouchableOpacity style={{borderWidth:1,width:"90%",height:50,borderRadius:13,backgroundColor:"#fc6f4c",borderColor:"#fc6f4c"}} onPress={signin}>
+                {isloading && <ActivityIndicator size={"large"} color="white"/>}
                     <Text style={{textAlign:"center",paddingTop:12,fontWeight:"bold",color:"white"}}>Send OTP</Text>
                 </TouchableOpacity>
             </View>

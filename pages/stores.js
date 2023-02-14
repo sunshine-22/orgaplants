@@ -3,11 +3,11 @@ import { SafeAreaView, View,Image,TouchableOpacity,Text } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 const Stores=({navigation,userlocation})=>{
     const [neatstores,setnearstores]=useState(0)
-    console.log(userlocation)
+   
     var displaynearstore=[]
 
     useEffect(()=>{
-        fetch("http://192.168.1.104:8000/get_nearstore/",{
+        fetch("http://52.66.225.96/get_nearstore/",{
             method:"POST",
             mode:"no-cors",
             headers:{

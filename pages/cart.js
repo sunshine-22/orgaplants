@@ -10,9 +10,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Locations from 'expo-location';
 const Cart=({route,navigation})=>{
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
     const [usercity,setusercity]=useState(route.params.delivery_location)
     const [cart_data,set_cart_data]=useState(0)
     const [isloading,setisloading]=useState(false)
+    const [isloading1,setisloading1]=useState(false)
     const [mannualaddress,setmannualaddress]=useState(false)
     const [paymentmode,setpaymentmode]=useState(<View style={{alignItems:"center",margin:"2%"}}><Text style={{fontWeight:"bold",padding:5,fontSize:15,color:"#fc6f4c"}}>Payment Options</Text></View>)
     const [paymentvisible,setpaymentvisible]=useState(false)
@@ -28,13 +33,51 @@ const Cart=({route,navigation})=>{
     const [state,setstate]=useState(null)
     const [pincode,setpincode]=useState(null)
     const [cart_total,set_cart_total]=useState(0)
+    const [cartdelete_stat,set_cart_delete_stat]=useState(false)
     var display_cart=[]
-    const checkout=()=>{
-        if(cart_data.length>0){
-            console.log("hi")
+    const checkout=async()=>{
+        setisloading1(true)
+        if(cart_data.length>0 && paymenttype!=null){
+            let userdata= await AsyncStorage.getItem("useridentity");
+            fetch('http://52.66.225.96/orderid/',{
+                method:"POST",
+                mode:"no-cors",
+                headers:{
+                    Accept: 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({
+                    userid:userdata,
+                    orderdate:dd + '/'+ mm + '/'  + yyyy,
+                    delivery_date:(parseInt(dd)+1) + '/'+ mm + '/'  + yyyy,
+                    paymode:paymenttype,
+                    cart_total:cart_total+30,
+                    billaddress:usercity
+
+                })
+            }).then((response)=>response.json())
+            .then((responseData)=>{
+                if(responseData.message=='success'){
+                    setisloading1(false)
+                    console.log(responseData)
+                    // navigation.navigate('Checkout',{billaddress:usercity,paymenttype:paymenttype,cart_total:cart_total,orderid:responseData.orderid,userid:userdata})
+                    navigation.reset({
+                        index: 0,
+                        routes: [{name:"Checkout",params:{billaddress:usercity,paymenttype:paymenttype,cart_total:cart_total,orderid:responseData.orderid,userid:userdata}}],
+                      })
+                   
+
+                }
+                else{
+                    setisloading1(false)
+                    Alert.alert("info","sorry! something went wrong!")
+                }
+            })
+            
         }
         else{
-            Alert.alert("info","Please Add something to checkout!")
+            setisloading1(false)
+            Alert.alert("info","Please Add something to checkout! or select Payment Method")
         }
     }
     const delete_cart=(deleteid)=>{
@@ -45,7 +88,7 @@ const Cart=({route,navigation})=>{
                 style:"cancel"
             },
             { text: "OK", onPress: async() => {
-                fetch("http://192.168.1.104:8000/delete_cart/",{
+                fetch("http://52.66.225.96/delete_cart/",{
                     method:"POST",
                     mode:"no-cors",
                     headers:{
@@ -60,36 +103,40 @@ const Cart=({route,navigation})=>{
                     if(responseData.message!="success"){
                         Alert.alert("info","something went wrong!")
                     }
+                    set_cart_delete_stat(true)
                 })
     
             },style:"destructive" }
         ])
     }
     useEffect(()=>{
-        async function get_cart_data(){
-            let userdata= await AsyncStorage.getItem("useridentity");
-            fetch("http://192.168.1.104:8000/get_cart/",{
-                method:"POST",
-                mode:"no-cors",
-                header:{
-                    Accept:"application/json",
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify({
-                    userid:userdata
-                })
-            }).then((response)=>response.json())
-            .then((responseData)=>{
-                if(responseData.message=="failed"){
-                    Alert.alert("Info","Sorry something went wrong!")
-                }
+       async function get_cart_data(){
+        let userdata=await AsyncStorage.getItem("useridentity");
+           fetch("http://52.66.225.96/get_cart/",{
+            method:"POST",
+            mode:"no-cors",
+            headers:{
+                Accept: 'application/json',
+            'Content-Type': 'application/json'
+            },
+            body:JSON.stringify({
+                userid:userdata
+            })
+           }).then((response)=>response.json())
+           .then((responseData)=>{
+            if(responseData.message=="failed"){
+                Alert.alert("Info","Sorry something went wrong!")
+            }
+            else{
                 set_cart_data(responseData.message)
                 set_cart_total(responseData.total)
-            })
+
+            }
+           })
 
         }
         get_cart_data();
-    },[delete_cart])
+    },[cartdelete_stat])
     const selectcurrentlocation=async ()=>{
         setisloading(true)
         let { status } = await Locations.requestForegroundPermissionsAsync();
@@ -100,7 +147,7 @@ const Cart=({route,navigation})=>{
 
         let location = await Locations.getCurrentPositionAsync({});
         let userdata= await AsyncStorage.getItem("useridentity");
-        fetch("http://192.168.1.104:8000/livelocation/",{
+        fetch("http://52.66.225.96/livelocation/",{
             method:"POST",
             mode:"no-cors",
             headers:{
@@ -153,54 +200,54 @@ const Cart=({route,navigation})=>{
     }
     const selgooglepay=()=>{
         setgooglepay(<MaterialCommunityIcons name="square-rounded" size={24} color="orange" />)
-        setpaymenttype("googlepay")
+        setpaymenttype("Google_Pay")
         setpaytm(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
         setphonepay(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
         setupi(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
         setcod(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
-        setpaymentmode(<View style={{alignItems:"center",margin:"2%"}}><Text style={{fontWeight:"bold",padding:5,fontSize:15,color:"#fc6f4c"}}>Google Pay</Text></View>)
+        setpaymentmode(<View style={{alignItems:"center",margin:"2%"}}><Text style={{fontWeight:"bold",padding:5,fontSize:15,color:"blue",textAlign:"center"}}>Pay Using G-Pay </Text></View>)
 
     }
     const selpaytm=()=>{
         setgooglepay(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
-        setpaymenttype("paytm")
+        setpaymenttype("Paytm")
         setpaytm(<MaterialCommunityIcons name="square-rounded" size={24} color="orange" />)
         setphonepay(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
         setupi(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
         setcod(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
-        setpaymentmode(<View style={{alignItems:"center",margin:"2%"}}><Text style={{fontWeight:"bold",padding:5,fontSize:15,color:"#fc6f4c"}}>Paytm</Text></View>)
+        setpaymentmode(<View style={{alignItems:"center",margin:"2%"}}><Text style={{fontWeight:"bold",padding:5,fontSize:15,color:"#1fdbf0"}}>Pay Using Paytm</Text></View>)
         
     }
     const selphonepe=()=>{
         setgooglepay(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
-        setpaymenttype("phonepe")
+        setpaymenttype("PhonePe")
         setpaytm(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
         setphonepay(<MaterialCommunityIcons name="square-rounded" size={24} color="orange" />)
         setupi(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
         setcod(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
-        setpaymentmode(<View style={{alignItems:"center",margin:"2%"}}><Text style={{fontWeight:"bold",padding:5,fontSize:15,color:"#fc6f4c"}}>Phone Pay</Text></View>)
+        setpaymentmode(<View style={{alignItems:"center",margin:"2%"}}><Text style={{fontWeight:"bold",padding:5,fontSize:15,color:"#8e11f5"}}>Pay By PhonePe</Text></View>)
         
         
     }
     const selupi=()=>{
         setgooglepay(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
-        setpaymenttype("upi")
+        setpaymenttype("UPI")
         setpaytm(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
         setphonepay(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
         setupi(<MaterialCommunityIcons name="square-rounded" size={24} color="orange" />)
         setcod(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
-        setpaymentmode(<View style={{alignItems:"center",margin:"2%"}}><Text style={{fontWeight:"bold",padding:5,fontSize:15,color:"#fc6f4c"}}>UPI Pay</Text></View>)
+        setpaymentmode(<View style={{alignItems:"center",margin:"2%"}}><Text style={{fontWeight:"bold",padding:5,fontSize:15,color:"#fc6f4c"}}>Pay using UPI</Text></View>)
         
         
     }
     const selcod=()=>{
         setgooglepay(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
-        setpaymenttype("cod")
+        setpaymenttype("Cash on Delivery")
         setpaytm(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
         setphonepay(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
         setupi(<MaterialCommunityIcons name="square-rounded-outline" size={24} color="black" />)
         setcod(<MaterialCommunityIcons name="square-rounded" size={24} color="orange" />)
-        setpaymentmode(<View style={{alignItems:"center",margin:"2%"}}><Text style={{fontWeight:"bold",padding:5,fontSize:15,color:"#fc6f4c"}}>Cash on Delivery</Text></View>)
+        setpaymentmode(<View style={{alignItems:"center",margin:"2%"}}><Text style={{fontWeight:"bold",padding:5,fontSize:15,color:"#fc6f4c"}}>Pay Using COD</Text></View>)
         
     }
     const Billing=(
@@ -305,7 +352,7 @@ const Cart=({route,navigation})=>{
                     {paymentmode}
                 </TouchableOpacity>
                 <TouchableOpacity style={{margin:"3%",height:45,flexDirection:"row",borderColor:"red",borderWidth:1,borderRadius:10,width:170,backgroundColor:"red",width:"50%"}} onPress={checkout}>
-                   
+                {isloading1 && <ActivityIndicator size={"large"} color="white"/>}
                     <View>
                         <Text style={{fontWeight:"bold",fontSize:15,padding:10,color:"white"}}>Checkout item-₹{cart_total+30}</Text>
                     </View>
@@ -326,7 +373,7 @@ const Cart=({route,navigation})=>{
                                 <View style={{margin:"3%"}}>
                                     <Text style={{fontSize:20,fontWeight:"bold",color:"grey"}}>Enter Address Mannually</Text>
                                 </View>
-                                <TouchableOpacity style={{margin:"2%",marginLeft:"auto"}} onPress={()=>setmodalvisible(false)}>
+                                <TouchableOpacity style={{margin:"2%",marginLeft:"auto"}} onPress={()=>setmannualaddress(false)}>
                                     <Ionicons name="close" size={34} color="#fc6f4c" />
                                 </TouchableOpacity>
                             </View>
