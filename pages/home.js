@@ -15,7 +15,7 @@ const Home=({navigation})=>{
         if(countryCode!="" && mobilenumber!="" && mobilenumber.length==10){
             
             const number=countryCode+mobilenumber
-            fetch("http://52.66.225.96/registeruser/",{
+            fetch("http://3.7.100.85:8080/registeruser/",{
                 method:"POST",
                 mode:"no-cors",
                 headers:{

@@ -8,7 +8,7 @@ const SlideShow=()=>{
     const bannerwidth=parseInt(windowWidth)-20
     const [banner,setbanner]=useState(<Image source={require("./images/logo/babber1.webp")} style={{height:200,width:bannerwidth,borderRadius:15}}/>)
     useEffect(()=>{
-        fetch("http://52.66.225.96/offerbanners/",{
+        fetch("http://3.7.100.85:8080/offerbanners/",{
             method:"GET",
             mode:"no-cors",
             headers:{
@@ -17,6 +17,7 @@ const SlideShow=()=>{
             }
         }).then((response)=>response.json())
         .then((responseData)=>{
+            
             for(let i=0;i<responseData.length;i++){
                 bannerdata.push(
                 responseData[i].offerbanner

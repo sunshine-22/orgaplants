@@ -51,7 +51,7 @@ const Dashboard=({navigation,route})=>{
         }
 
         let location = await Locations.getCurrentPositionAsync({});
-        fetch("http://52.66.225.96/livelocation/",{
+        fetch("http://3.7.100.85:8080/livelocation/",{
             method:"POST",
             mode:"no-cors",
             headers:{
@@ -94,7 +94,7 @@ const Dashboard=({navigation,route})=>{
 
             let location = await Locations.getCurrentPositionAsync({});
             setLocation(location);
-                 fetch("http://52.66.225.96/liveuser/",{
+                 fetch("http://3.7.100.85:8080/liveuser/",{
                     method:"POST",
                     mode:"no-cors",
                     headers:{
@@ -124,7 +124,7 @@ const Dashboard=({navigation,route})=>{
                 })
         }
         function getuserdata(){
-            fetch("http://52.66.225.96/getuserdata/",{
+            fetch("http://3.7.100.85:8080/getuserdata/",{
                 method:"POST",
                 mode:"no-cors",
                 headers:{
@@ -136,7 +136,7 @@ const Dashboard=({navigation,route})=>{
                 })
             }).then((response)=>response.json())
             .then((responseData)=>{
-             
+               
                 settextactivity("almost Done")
                 setuserfetchdata(responseData)
                 setdisplaypage(true)

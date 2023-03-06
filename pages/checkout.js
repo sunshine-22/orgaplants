@@ -25,7 +25,7 @@ const Checkout=({navigation,route})=>{
         setisloading(true)
         if(usercity.district=="Hosur" || usercity.district=="hosur" || usercity.district=="Krishnagiri" || usercity.district=="krishnagiri"){
             let userdata= await AsyncStorage.getItem("useridentity");
-       await fetch("http://52.66.225.96/pay/",{
+       await fetch("http://3.7.100.85:8080/pay/",{
         method:"POST",
         mode:"no-cors",
         headers:{

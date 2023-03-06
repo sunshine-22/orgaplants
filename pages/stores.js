@@ -7,7 +7,7 @@ const Stores=({navigation,userlocation})=>{
     var displaynearstore=[]
 
     useEffect(()=>{
-        fetch("http://52.66.225.96/get_nearstore/",{
+        fetch("http://3.7.100.85:8080/get_nearstore/",{
             method:"POST",
             mode:"no-cors",
             headers:{

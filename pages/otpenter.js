@@ -44,7 +44,7 @@ const OtpEnter=({route,navigation})=>{
         const otp=otp1+otp2+otp3+otp4
      
         if(otp==route.params.generatedotp){
-            fetch("http://52.66.225.96/saveuser/",{
+            fetch("http://3.7.100.85:8080/saveuser/",{
                 method:"POST",
                 mode:"no-cors",
                 headers:{

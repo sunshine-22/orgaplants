@@ -11,17 +11,16 @@ const StoreMenu=({navigation,route})=>{
     const [orderdesc,setorderdesc]=useState(false)
     const [modalvisible,setmodalvisible]=useState(false)
     const [storedata,setstoredata]=useState(0)
-    const [temp_cart_storage,settemp_cart_storage]=useState({})
+    const [temp_cart_storage,settemp_cart_storage]=useState([])
     const [productcount,setproductcount]=useState(1)
     const [producttotal,setproducttotal]=useState(1)
     const [product_inc_value,setproduct_inc_value]=useState(0)
     const [isloading,setisloading]=useState(false)
-    const [user,setuser]=useState(null)
+    const [user,setuser]=useState([])
     var displayrecomentas=[]
-   
     useEffect(()=>{
        function get_store_details(){
-            fetch("http://52.66.225.96/go_to_store/",{
+            fetch("http://3.7.100.85:8080/go_to_store/",{
                 method:"POST",
                 mode:"no-cors",
                 headers:{
@@ -34,11 +33,11 @@ const StoreMenu=({navigation,route})=>{
                 })
             }).then((response)=>response.json())
             .then(async (responseData)=>{
+                
                 if(responseData.message=="failed"){
                     Alert.alert("Info","sorry something went wrong")
                 }
                 else{
-                    
                     setstoredata(responseData.message);
                     set_Storefound(true)
                     let userdata= await AsyncStorage.getItem("useridentity");
@@ -151,7 +150,8 @@ const StoreMenu=({navigation,route})=>{
             add_cart.total_price=producttotal
             add_cart.user_key=user
             add_cart.expired=false
-            fetch("http://52.66.225.96/add_cart/",{
+            add_cart.storeid=route.params.storeid._id
+            fetch("http://3.7.100.85:8080/add_cart/",{
                 method:"POST",
                 mode:"no-cors",
                 headers:{

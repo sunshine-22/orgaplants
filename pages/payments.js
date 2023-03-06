@@ -22,7 +22,7 @@ const Payment=({route})=>{
                 style:"cancel"
             },
             { text: "OK", onPress: async() => {
-                fetch("http://52.66.225.96/delete_user_address/",{
+                fetch("http://3.7.100.85:8080/delete_user_address/",{
                     method:"POST",
                     mode:"no-cors",
                     headers:{
@@ -44,7 +44,7 @@ const Payment=({route})=>{
         ])
     }
     useEffect(()=>{
-        fetch("http://52.66.225.96/getuseraddresses/",{
+        fetch("http://3.7.100.85:8080/getuseraddresses/",{
             method:"POST",
             mode:"no-cors",
             headers:{
@@ -74,7 +74,7 @@ const Payment=({route})=>{
 
       let location = await Locations.getCurrentPositionAsync({});
       setLocation(location);
-      fetch("http://52.66.225.96/livelocation/",{
+      fetch("http://3.7.100.85:8080/livelocation/",{
         method:"POST",
         mode:"no-cors",
         headers:{

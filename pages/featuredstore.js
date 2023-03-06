@@ -11,7 +11,7 @@ const FeaturedStore=({navigation,route})=>{
     var displaycategorystore=[]
     const [displaypage,setdisplaypage]=useState(true)
     useEffect(()=>{
-        fetch("http://52.66.225.96/get_featuredstore/",{
+        fetch("http://3.7.100.85:8080/get_featuredstore/",{
             method:"POST",
             mode:"no-cors",
             headers:{
@@ -27,7 +27,7 @@ const FeaturedStore=({navigation,route})=>{
         })
     },[])
     useEffect(()=>{
-        fetch("http://52.66.225.96/get_category_store/",{
+        fetch("http://3.7.100.85:8080/get_category_store/",{
             method:"POST",
             mode:"no-cors",
             headers:{

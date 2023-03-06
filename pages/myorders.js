@@ -8,7 +8,7 @@ const MyOrders=()=>{
     useEffect(()=>{
         async function getoredr_history(){
             let userdata= await AsyncStorage.getItem("useridentity");
-                fetch("http://52.66.225.96/orderhistory/",{
+                fetch("http://3.7.100.85:8080/orderhistory/",{
                     method:"POST",
                     mode:"no-cors",
                     headers:{

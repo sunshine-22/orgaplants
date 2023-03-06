@@ -39,7 +39,7 @@ const Cart=({route,navigation})=>{
         setisloading1(true)
         if(cart_data.length>0 && paymenttype!=null){
             let userdata= await AsyncStorage.getItem("useridentity");
-            fetch('http://52.66.225.96/orderid/',{
+            fetch('http://3.7.100.85:8080/orderid/',{
                 method:"POST",
                 mode:"no-cors",
                 headers:{
@@ -88,7 +88,7 @@ const Cart=({route,navigation})=>{
                 style:"cancel"
             },
             { text: "OK", onPress: async() => {
-                fetch("http://52.66.225.96/delete_cart/",{
+                fetch("http://3.7.100.85:8080/delete_cart/",{
                     method:"POST",
                     mode:"no-cors",
                     headers:{
@@ -112,7 +112,7 @@ const Cart=({route,navigation})=>{
     useEffect(()=>{
        async function get_cart_data(){
         let userdata=await AsyncStorage.getItem("useridentity");
-           fetch("http://52.66.225.96/get_cart/",{
+           fetch("http://3.7.100.85:8080/get_cart/",{
             method:"POST",
             mode:"no-cors",
             headers:{
@@ -147,7 +147,7 @@ const Cart=({route,navigation})=>{
 
         let location = await Locations.getCurrentPositionAsync({});
         let userdata= await AsyncStorage.getItem("useridentity");
-        fetch("http://52.66.225.96/livelocation/",{
+        fetch("http://3.7.100.85:8080/livelocation/",{
             method:"POST",
             mode:"no-cors",
             headers:{
